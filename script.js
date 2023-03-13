@@ -28,3 +28,15 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
+
+const header = document.querySelector('.header');
+const message = document.createElement('span');
+message.classList.add('cookie-message');
+message.innerHTML = `this site has cookies <button class="btn btn--close-cookie">Got it </button>`;
+header.append(message);
+
+const closeCookiee = document.querySelector('.btn--close-cookie');
+console.log(closeCookiee);
+closeCookiee.addEventListener('click', function () {
+  message.remove();
+});
