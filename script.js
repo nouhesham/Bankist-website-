@@ -40,3 +40,24 @@ console.log(closeCookiee);
 closeCookiee.addEventListener('click', function () {
   message.remove();
 });
+
+//to know the real color for the element
+console.log(getComputedStyle(message).height);
+
+// document.documentElement.style.setProperty('--color-primary', 'orangered');
+const logo = document.querySelector('.nav__logo');
+
+console.log(logo.className);
+
+const btnscroll = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnscroll.addEventListener('click', function (e) {
+  // const sec = section1.getBoundingClientRect();
+  // window.scrollTo({
+  //   left: sec.left + window.pageXOffset,
+  //   top: sec.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
