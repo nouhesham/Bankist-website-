@@ -56,12 +56,32 @@ document.querySelectorAll('.nav__link').forEach(function (el) {
   el.addEventListener('click', function (e) {
     e.preventDefault();
 
-    const id = this.getAttribute('href');
+    const id = e.target.getAttribute('href');
+    console.log(id);
 
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-
-    console.log('link');
   });
+});
+//tapped components
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+tabsContainer.addEventListener('click', function (e) {
+  const click = e.target.closest('.operations__tab');
+  console.log(click);
+  if (!click) return;
+
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  click.classList.add('operations__tab--active');
+  //Activate content area
+
+  tabsContent.forEach(cont =>
+    cont.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${click.dataset.tab}`)
+    .classList.add('operations__content--active');
 });
 
 //Experimenting some stuff
