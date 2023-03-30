@@ -10,6 +10,9 @@ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const header = document.querySelector('.header');
+
+const nav = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -40,7 +43,6 @@ btnscroll.addEventListener('click', function (e) {
   // });
   section1.scrollIntoView({ behavior: 'smooth' });
 });
-const header = document.querySelector('.header');
 const message = document.createElement('span');
 message.classList.add('cookie-message');
 message.innerHTML = `this site has cookies <button class="btn btn--close-cookie">Got it </button>`;
@@ -57,7 +59,6 @@ document.querySelectorAll('.nav__link').forEach(function (el) {
     e.preventDefault();
 
     const id = e.target.getAttribute('href');
-    console.log(id);
 
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   });
@@ -83,6 +84,22 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${click.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+//menu fade animation
+
+nav.addEventListener('mouseover', function (e) {
+  if (e.target.classList.contains('.nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelector('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    siblings.forEach(el => {
+      if (el !== link) {
+      }
+    });
+  }
+});
+
+nav.addEventListener('mouseout', function (e) {});
 
 //Experimenting some stuff
 
