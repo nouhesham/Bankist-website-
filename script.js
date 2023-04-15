@@ -87,6 +87,7 @@ tabsContainer.addEventListener('click', function (e) {
 
 //menu fade animation
 const handHover = function (e, opacity) {
+  console.log(e);
   if (e.target.classList.contains('.nav__link')) {
     const link = e.target;
     console.log(link);
