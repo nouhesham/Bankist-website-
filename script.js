@@ -87,12 +87,12 @@ tabsContainer.addEventListener('click', function (e) {
 
 //menu fade animation
 const handHover = function (e, opacity) {
-  console.log(e);
-  if (e.target.classList.contains('.nav__link')) {
+  // console.log(e.target);
+  if (e.target.classList.contains('nav__link')) {
     const link = e.target;
-    console.log(link);
 
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+
     const logo = link.closest('.nav').querySelector('img');
 
     siblings.forEach(el => {
@@ -102,9 +102,134 @@ const handHover = function (e, opacity) {
   }
 };
 
-nav.addEventListener('mouseover', handHover.bind(0.5));
+nav.addEventListener('mouseover', e => {
+  // console.log('1', e);
+  handHover(e, 0.5);
+});
 
-nav.addEventListener('mouseout', handHover.bind(1));
+nav.addEventListener('mouseout', e => handHover(e, 1));
+//sticky navigation using window
+
+// const intitalCord = section1.getBoundingClientRect();
+// console.log(intitalCord);
+
+// window.addEventListener('scroll', function () {
+//   if (this.window.scrollY > intitalCord.top) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
+//sticky navigation using intersectionObserver Api
+//function
+// const obsCallBack = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+// //options
+// const observerOptions = {
+//   root: null,
+//   //precentage we want to have visible
+//   threshold: 0.1,
+// };
+
+// const observer = new IntersectionObserver(obsCallBack, observerOptions);
+// observer.observe(section1);
+
+//when zero percent of the header is visible we want to implement a certian function
+const header1 = document.querySelector('.header');
+const stickyNav = function (entries) {
+  const [entry] = entries; //same as entry[0]
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+};
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null,
+  threshold: 0, //as if a there is an invisible margin to the section
+  rootMargin: '-90px',
+});
+
+headerObserver.observe(header);
+
+const allSections = document.querySelectorAll('.section');
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
+//lazy loading images
+
+const images = document.querySelectorAll('img[data-src]');
+const revealImage = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  //replace the image
+  entry.target.src = entry.target.dataset.src;
+
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+
+  observer.unobserve(entry.target);
+};
+
+const ImageObserver = new IntersectionObserver(revealImage, {
+  root: null,
+  threshold: 0,
+
+  rootMargin: '-200px',
+});
+images.forEach(function (image) {
+  ImageObserver.observe(image);
+});
+
+//slider
+
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnright = document.querySelector('.slider__btn--right');
+
+const curMax = slides.length;
+let curSlide = 0;
+const gotoslide = function (slide) {
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+  );
+};
+gotoslide(0);
+const nextSlide = function () {
+  if (curSlide === curMax - 1) {
+    curSlide = 0;
+  } else {
+    curSlide++;
+  }
+  gotoslide(curSlide);
+};
+const previousSlide = function () {
+  if (curSlide === 0) {
+    curSlide = curMax - 1;
+  } else {
+    curSlide--;
+  }
+  gotoslide(curSlide);
+};
+
+btnright.addEventListener('click', nextSlide);
+
+btnLeft.addEventListener('click', previousSlide);
+//
 
 //Experimenting some stuff
 
