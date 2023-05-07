@@ -196,39 +196,88 @@ images.forEach(function (image) {
 });
 
 //slider
+const slider = function () {
+  const slides = document.querySelectorAll('.slide');
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnright = document.querySelector('.slider__btn--right');
+  const dots = document.querySelector('.dots');
 
-const slides = document.querySelectorAll('.slide');
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnright = document.querySelector('.slider__btn--right');
+  const curMax = slides.length;
+  let curSlide = 0;
+  const gotoslide = function (slide) {
+    slides.forEach(
+      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+    );
+  };
 
-const curMax = slides.length;
-let curSlide = 0;
-const gotoslide = function (slide) {
-  slides.forEach(
-    (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
-  );
+  const nextSlide = function () {
+    if (curSlide === curMax - 1) {
+      curSlide = 0;
+    } else {
+      curSlide++;
+    }
+    gotoslide(curSlide);
+    active(curSlide);
+  };
+  const previousSlide = function () {
+    if (curSlide === 0) {
+      curSlide = curMax - 1;
+    } else {
+      curSlide--;
+    }
+    gotoslide(curSlide);
+    active(curSlide);
+  };
+
+  const init = function () {
+    createDots();
+    gotoslide(0);
+    active(0);
+  };
+  const createDots = function () {
+    slides.forEach((_, i) =>
+      dots.insertAdjacentHTML(
+        'beforeend',
+        `<button class="dots__dot" data-slide="${i}"></button>`
+      )
+    );
+  };
+  const active = function (slide) {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(dot => dot.classList.remove('dots__dot--active'));
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"`)
+      .classList.add('dots__dot--active');
+  };
+
+  init();
+
+  btnright.addEventListener('click', nextSlide);
+
+  btnLeft.addEventListener('click', previousSlide);
+
+  document.addEventListener('keydown', function (e) {
+    console.log(e);
+    if (e.key === 'ArrowLeft') previousSlide();
+    else if (e.key === 'ArrowRight') nextSlide();
+  });
+
+  dots.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      document
+        .querySelectorAll('.dots__dot')
+        .forEach(dot => dot.classList.remove('dots__dot--active'));
+      const numberOfslide = e.target.dataset.slide;
+      e.target.classList.add('dots__dot--active');
+
+      gotoslide(numberOfslide);
+    }
+  });
 };
-gotoslide(0);
-const nextSlide = function () {
-  if (curSlide === curMax - 1) {
-    curSlide = 0;
-  } else {
-    curSlide++;
-  }
-  gotoslide(curSlide);
-};
-const previousSlide = function () {
-  if (curSlide === 0) {
-    curSlide = curMax - 1;
-  } else {
-    curSlide--;
-  }
-  gotoslide(curSlide);
-};
 
-btnright.addEventListener('click', nextSlide);
+slider();
 
-btnLeft.addEventListener('click', previousSlide);
 //
 
 //Experimenting some stuff
